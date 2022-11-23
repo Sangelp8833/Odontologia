@@ -3,6 +3,10 @@ package com.sangelp.dh.domain.models;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.websocket.OnError;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 @Entity
 @Data
@@ -24,5 +28,6 @@ public class Turno {
     @JoinColumn(name = "odontologo_id")
     private Odontologo odontologo;
 
+    private LocalDateTime date = LocalDateTime.now(ZoneId.of("America/Bogota"));
 
 }

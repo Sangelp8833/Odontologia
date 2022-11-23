@@ -35,7 +35,7 @@ public class Paciente {
     @JoinColumn(name = "domicilio_id")
     private Domicilio domicilio;
 
-    @OneToMany(cascade = CascadeType.ALL,mappedBy = "odontologo")
+    @OneToMany(cascade = CascadeType.ALL,mappedBy = "paciente")
     private Set<Turno> turnos;
 
 }

@@ -25,7 +25,7 @@ public class Odontologo {
     @NotNull(message = "apellido no debe estar vacío.")
     private String apellido;
 
-    @OneToMany(cascade = CascadeType.ALL,mappedBy = "paciente")
+    @OneToMany(cascade = CascadeType.ALL,mappedBy = "odontologo")
     private Set<Turno> turnos;
 
 }
