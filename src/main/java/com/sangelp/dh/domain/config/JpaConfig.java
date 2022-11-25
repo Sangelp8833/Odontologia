@@ -10,7 +10,7 @@ import javax.sql.DataSource;
 public class JpaConfig {
 
     private static String url = "jdbc:postgresql://localhost:5432/odontologia";
-    private static String username = "root"; // Poner su usuario
+    private static String username = "postgres"; // Poner su usuario
     private static String password = "sasa"; // colocar su contraseña
 
     @Bean

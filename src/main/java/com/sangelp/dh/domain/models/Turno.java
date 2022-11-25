@@ -3,8 +3,7 @@ package com.sangelp.dh.domain.models;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.websocket.OnError;
-import java.time.LocalDate;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 
@@ -28,6 +27,9 @@ public class Turno {
     @JoinColumn(name = "odontologo_id")
     private Odontologo odontologo;
 
-    private LocalDateTime date = LocalDateTime.now(ZoneId.of("America/Bogota"));
+    @NotNull(message = "La fecha no puede estar vacía.")
+    private LocalDateTime date;
+
+    private LocalDateTime created = LocalDateTime.now(ZoneId.of("America/Bogota"));
 
 }

@@ -14,4 +14,5 @@ public class TurnoDto {
     @NotBlank(message = "El odontólogo no puede estar vacío.")
     private OdontologoDto odontologoDto;
 
+
 }
