@@ -43,6 +43,15 @@ public class OdontologoImpl implements OdontologoService {
     }
 
     @Override
+    public OdontologoDto findByMatricula(Long matricula) {
+        if(odontologoRepository.findByMatricula(matricula) == null){
+            return null;
+        }else  {
+            return modelMapper.map(odontologoRepository.findByMatricula(matricula),OdontologoDto.class) ;
+        }
+    }
+
+    @Override
     public boolean deleteOndontologo(Long id) {
         if(!odontologoRepository.findById(id).isEmpty()){
             odontologoRepository.deleteById(id);
@@ -66,4 +75,6 @@ public class OdontologoImpl implements OdontologoService {
             return true;
         }).orElse(false);
     }
+
+
 }
