@@ -10,6 +10,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -60,13 +62,39 @@ public class OdontologoController {
             @ApiResponse(responseCode = "400",description = "Petición errada.")
     })
     public ResponseEntity<?> registrarOdontologo(@RequestBody OdontologoDto odontologoDto){
-        System.out.println(odontologoDto.getNombre());
         if(odontologoImpl.findByMatricula(odontologoDto.getMatricula()) == null){
             Map<String,Object> message = new HashMap<>();
             message.put("Odontologo",odontologoImpl.saveOdontologo(odontologoDto));
             return new ResponseEntity<>(message, HttpStatus.OK);
         }else{
             return new ResponseEntity<>("Ya hay un odontólogo registrados en la base de datos con esa Matricula.", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping()
+    @Operation(summary = "Endpoint para actualizar odontólogos.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Se ha actualizado correctamente el odontólogo."),
+            @ApiResponse(responseCode = "404",description = "Petición errada, no se ha encontrado ningún odontólogo.")
+    })
+    public ResponseEntity<?> actualizarOdontologo(@RequestBody Map<String, Object> partialUpdate,@RequestParam("id") Long odontologoId ){
+        if(odontologoImpl.updateOdontologo(partialUpdate, odontologoId)){
+            return new ResponseEntity<>("El odontólogo ha sido actualizado correctamente.",HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>("No se ha encontrado el odontólogo para actualizar.", HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @DeleteMapping()
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Se ha eliminado correctamente el odontólogo."),
+            @ApiResponse(responseCode = "404",description = "Petición errada, no se ha encontrado ningún odontólogo.")
+    })
+    public ResponseEntity<?>eliminarOdontologo(@RequestParam("id") Long odontologoId ){
+        if(odontologoImpl.deleteOndontologo(odontologoId)){
+            return new ResponseEntity<>("El odontólogo ha sido eliminado correctamente.",HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>("El odontólogo buscado no se encuntra en la base de datos.", HttpStatus.NOT_FOUND);
         }
     }
 

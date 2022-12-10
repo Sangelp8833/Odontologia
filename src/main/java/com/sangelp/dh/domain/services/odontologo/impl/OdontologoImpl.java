@@ -66,10 +66,19 @@ public class OdontologoImpl implements OdontologoService {
         Optional<Odontologo> odontologoFound = odontologoRepository.findById(id);
         return odontologoFound.map(odontologo -> {
             partialUpdate.forEach((key,value) -> {
-                Field field = ReflectionUtils.findField(odontologo.getClass(),key);
-                assert field != null;
-                field.setAccessible(true);
-                ReflectionUtils.setField(field,odontologo,value);
+                if(key.equals("matricula")){
+                    if(value instanceof Integer){
+                        Long newValue =  Long.valueOf((Integer) value);
+                        odontologo.setMatricula(newValue);
+                    }else{
+                        odontologo.setMatricula((Long) value);
+                    }
+                }else{
+                    Field field = ReflectionUtils.findField(odontologo.getClass(),key);
+                    assert field != null;
+                    field.setAccessible(true);
+                    ReflectionUtils.setField(field,odontologo,value);
+                }
             });
             odontologoRepository.save(odontologo);
             return true;
