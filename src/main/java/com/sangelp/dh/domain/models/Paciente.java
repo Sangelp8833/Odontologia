@@ -31,7 +31,7 @@ public class Paciente {
     @NotNull(message = "email no debe estar vacío.")
     private String email;
     @NotNull(message = "DNI no debe estar vacío.")
-    private Long DNI;
+    private Long dni;
     private LocalDateTime fechaIngreso = LocalDateTime.now(ZoneId.of("America/Bogota"));
 
     @ManyToOne

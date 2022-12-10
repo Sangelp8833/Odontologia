@@ -30,13 +30,9 @@ public class Domicilio {
     @NotNull(message = "La provincia no debe estar vacío.")
     private String provincia;
 
-    private String direccionCompleta = "calle "+this.calle+"-"+this.numero+"\n"+this.localidad+"\n"+this.provincia;
+    private String direccionCompleta = "calle "+this.calle+"#"+this.numero+"\n"+this.localidad+"\n"+this.provincia;
 
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "domicilio")
     private Set<Paciente> pacientes;
-
-    public void direccionCompleta(){
-        this.direccionCompleta = this.calle + " " + this.numero + " - " + this.localidad + ", " + this.provincia;
-    }
 
 }

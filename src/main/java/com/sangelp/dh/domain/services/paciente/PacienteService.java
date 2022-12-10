@@ -11,7 +11,7 @@ public interface PacienteService {
     PacienteDto savePaciente(PacienteDto pacienteDto);
     List<PacienteDto> findAll();
     PacienteDto findById(Long id);
-    PacienteDto findByNombre(String nombre);
+    PacienteDto findByDni(Long dni);
     boolean deletePaciente(Long id);
     boolean updatePaciente(Map<String,Object> partialUpdate, Long id);
 }

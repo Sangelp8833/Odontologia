@@ -1,11 +1,11 @@
 package com.sangelp.dh.domain.services.paciente.impl;
 
-import com.sangelp.dh.domain.dto.OdontologoDto;
 import com.sangelp.dh.domain.dto.PacienteDto;
-import com.sangelp.dh.domain.models.Odontologo;
+import com.sangelp.dh.domain.models.Domicilio;
 import com.sangelp.dh.domain.models.Paciente;
 import com.sangelp.dh.domain.services.paciente.PacienteService;
-import com.sangelp.dh.repository.OdontologoRepository;
+import com.sangelp.dh.helpers.mappers.PacienteMapper;
+import com.sangelp.dh.repository.DomicilioRepository;
 import com.sangelp.dh.repository.PacienteRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,11 +25,17 @@ public class PacienteImpl implements PacienteService {
     private PacienteRepository pacienteRepository;
 
     @Autowired
+    private DomicilioRepository domicilioRepository;
+
+    @Autowired
     private ModelMapper modelMapper;
+
+    @Autowired
+    private PacienteMapper pacienteMapper;
 
     @Override
     public PacienteDto savePaciente(PacienteDto pacienteDto) {
-        Paciente paciente = modelMapper.map(pacienteDto,Paciente.class);
+        Paciente paciente = pacienteMapper.dto2Model(pacienteDto);
         return modelMapper.map(pacienteRepository.save(paciente),PacienteDto.class);
     }
 
@@ -46,11 +52,11 @@ public class PacienteImpl implements PacienteService {
     }
 
     @Override
-    public PacienteDto findByNombre(String nombre) {
-        if(pacienteRepository.findByNombre(nombre) == null){
+    public PacienteDto findByDni(Long dni) {
+        if(pacienteRepository.findByDni(dni) == null){
             return null;
         }else  {
-            return modelMapper.map(pacienteRepository.findByNombre(nombre),PacienteDto.class) ;
+            return modelMapper.map(pacienteRepository.findByDni(dni),PacienteDto.class) ;
         }
     }
 
@@ -69,17 +75,26 @@ public class PacienteImpl implements PacienteService {
         Optional<Paciente> pacienteFound = pacienteRepository.findById(id);
         return pacienteFound.map(paciente -> {
             partialUpdate.forEach((key,value) -> {
-
+                if(key.equals("domicilio")){
+                    Domicilio domicilio = modelMapper.map(value,Domicilio.class);
+                    Domicilio domicilioSaved = domicilioRepository.save(domicilio);
+                    paciente.setDomicilio(domicilioSaved);
+                }else if(key.equals("dni")){
+                    if(value instanceof Integer){
+                        Long newValue =  Long.valueOf((Integer) value);
+                        paciente.setDni(newValue);
+                    }else{
+                        paciente.setDni((Long) value);
+                    }
+                }else{
                     Field field = ReflectionUtils.findField(paciente.getClass(),key);
                     assert field != null;
                     field.setAccessible(true);
                     ReflectionUtils.setField(field,paciente,value);
-
+                }
             });
             pacienteRepository.save(paciente);
             return true;
         }).orElse(false);
     }
-
-
 }

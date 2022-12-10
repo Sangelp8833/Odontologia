@@ -2,7 +2,6 @@ package com.sangelp.dh.domain.Controllers;
 
 import com.sangelp.dh.domain.dto.OdontologoDto;
 import com.sangelp.dh.domain.dto.PacienteDto;
-import com.sangelp.dh.domain.services.odontologo.impl.OdontologoImpl;
 import com.sangelp.dh.domain.services.paciente.impl.PacienteImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -31,7 +30,7 @@ public class PacienteController {
     PacienteImpl pacienteImpl;
 
     @GetMapping()
-    @Operation(summary = "Endpoint para listar los odontólogos.")
+    @Operation(summary = "Endpoint para listar los pacientes.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "La petición ha sido exitosa.",
                     content = {
@@ -39,18 +38,18 @@ public class PacienteController {
                                     array = @ArraySchema(schema = @Schema(implementation = OdontologoDto.class)))
                     })
     })
-    public ResponseEntity<?> listarOdontologo(){
+    public ResponseEntity<?> listarPacientes(){
         if(pacienteImpl.findAll().isEmpty()){
-            return new ResponseEntity<>("No hay Odontologos registrados en la base de datos.", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("No hay pacientes registrados en la base de datos.", HttpStatus.NOT_FOUND);
         }else{
             Map<String,Object> message = new HashMap<>();
-            message.put("Odontologos",pacienteImpl.findAll());
+            message.put("Pacientes",pacienteImpl.findAll());
             return new ResponseEntity<>(message, HttpStatus.OK);
         }
     }
 
     @PostMapping()
-    @Operation(summary = "Endpoint para agregar odontólogos.")
+    @Operation(summary = "Endpoint para agregar pacientes.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "La petición ha sido exitosa.",
                     content = {
@@ -60,45 +59,45 @@ public class PacienteController {
             @ApiResponse(responseCode = "400",description = "Petición errada.")
     })
     public ResponseEntity<?> registrarPaciente(@RequestBody PacienteDto pacienteDtoDto){
-        if(pacienteImpl.findByNombre(pacienteDtoDto.getNombre()) == null){
+        if(pacienteImpl.findByDni(pacienteDtoDto.getDNI()) == null){
             Map<String,Object> message = new HashMap<>();
-            message.put("Odontologo",pacienteImpl.savePaciente(pacienteDtoDto));
+            message.put("Paciente",pacienteImpl.savePaciente(pacienteDtoDto));
             return new ResponseEntity<>(message, HttpStatus.OK);
         }else{
-            return new ResponseEntity<>("Ya hay un odontólogo registrados en la base de datos con esa Matricula.", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Ya hay un paciente registrado en la base de datos con ese DNI.", HttpStatus.BAD_REQUEST);
         }
     }
 
     @PutMapping()
-    @Operation(summary = "Endpoint para actualizar odontólogos.")
+    @Operation(summary = "Endpoint para actualizar pacientes.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Se ha actualizado correctamente el odontólogo."),
-            @ApiResponse(responseCode = "404",description = "Petición errada, no se ha encontrado ningún odontólogo.")
+            @ApiResponse(responseCode = "200", description = "Se ha actualizado correctamente el paciente."),
+            @ApiResponse(responseCode = "404",description = "Petición errada, no se ha encontrado ningún paciente.")
     })
     public ResponseEntity<?> actualizarPaciente(@RequestBody Map<String, Object> partialUpdate,@RequestParam("id") Long pacienteId ){
         if(pacienteImpl.updatePaciente(partialUpdate, pacienteId)){
-            return new ResponseEntity<>("El odontólogo ha sido actualizado correctamente.",HttpStatus.OK);
+            return new ResponseEntity<>("El paciente ha sido actualizado correctamente.",HttpStatus.OK);
         }else{
-            return new ResponseEntity<>("No se ha encontrado el odontólogo para actualizar.", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("No se ha encontrado el paciente para actualizar.", HttpStatus.NOT_FOUND);
         }
     }
 
     @DeleteMapping()
-    @Operation(summary = "Endpoint para eliminar odontólogos.")
+    @Operation(summary = "Endpoint para eliminar pacientes.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Se ha eliminado correctamente el odontólogo."),
-            @ApiResponse(responseCode = "404",description = "Petición errada, no se ha encontrado ningún odontólogo.")
+            @ApiResponse(responseCode = "200", description = "Se ha eliminado correctamente el paciente."),
+            @ApiResponse(responseCode = "404",description = "Petición errada, no se ha encontrado ningún paciente.")
     })
     public ResponseEntity<?>eliminarPaciente(@RequestParam("id") Long pacienteId ){
         if(pacienteImpl.deletePaciente(pacienteId)){
-            return new ResponseEntity<>("El odontólogo ha sido eliminado correctamente.",HttpStatus.OK);
+            return new ResponseEntity<>("El paciente ha sido eliminado correctamente.",HttpStatus.OK);
         }else{
-            return new ResponseEntity<>("El odontólogo buscado no se encuntra en la base de datos.", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("El paciente buscado no se encuentra en la base de datos.", HttpStatus.NOT_FOUND);
         }
     }
 
-    @PostMapping("/by-nombre")
-    @Operation(summary = "Endpoint para buscar odontólogo por matrícula.")
+    @PostMapping("/by-dni")
+    @Operation(summary = "Endpoint para buscar paciente por DNI.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "La petición ha sido exitosa.",
                     content = {
@@ -107,13 +106,13 @@ public class PacienteController {
                     }),
             @ApiResponse(responseCode = "400",description = "Petición errada.")
     })
-    public ResponseEntity<?>buscarPacientePorNombre(@RequestParam("nombre") String nombre ){
-        if(pacienteImpl.findByNombre(nombre) != null){
+    public ResponseEntity<?>buscarPacientePorDni(@RequestParam("Dni") Long dni ){
+        if(pacienteImpl.findByDni(dni) != null){
             Map<String,Object> message = new HashMap<>();
-            message.put("odontólogo",pacienteImpl.findByNombre(nombre));
+            message.put("Paciente",pacienteImpl.findByDni(dni));
             return new ResponseEntity<>(message,HttpStatus.OK);
         }else{
-            return new ResponseEntity<>("El odontólogo buscado no se encuntra en la base de datos.", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("El paciente buscado no se encuentra en la base de datos.", HttpStatus.NOT_FOUND);
         }
     }
 
