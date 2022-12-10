@@ -12,9 +12,9 @@ import java.util.Set;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@SQLDelete(sql = "UPDATE members SET deleted = true WHERE id=?")
-@Where(clause = "deleted=false")
 @Table(name = "odontologos")
+@SQLDelete(sql = "UPDATE odontologos SET deleted = true WHERE odontologo_id = ?")
+@Where(clause = "deleted = false")
 public class Odontologo {
 
     @Id

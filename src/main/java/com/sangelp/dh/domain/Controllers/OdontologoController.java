@@ -86,6 +86,7 @@ public class OdontologoController {
     }
 
     @DeleteMapping()
+    @Operation(summary = "Endpoint para eliminar odontólogos.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Se ha eliminado correctamente el odontólogo."),
             @ApiResponse(responseCode = "404",description = "Petición errada, no se ha encontrado ningún odontólogo.")
@@ -93,6 +94,26 @@ public class OdontologoController {
     public ResponseEntity<?>eliminarOdontologo(@RequestParam("id") Long odontologoId ){
         if(odontologoImpl.deleteOndontologo(odontologoId)){
             return new ResponseEntity<>("El odontólogo ha sido eliminado correctamente.",HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>("El odontólogo buscado no se encuntra en la base de datos.", HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PostMapping("/by-matricula")
+    @Operation(summary = "Endpoint para buscar odontólogo por matrícula.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "La petición ha sido exitosa.",
+                    content = {
+                            @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = OdontologoDto.class))
+                    }),
+            @ApiResponse(responseCode = "400",description = "Petición errada.")
+    })
+    public ResponseEntity<?>buscarOdontologoPorMatricula(@RequestParam("matricula") Long matricula ){
+        if(odontologoImpl.findByMatricula(matricula) != null){
+            Map<String,Object> message = new HashMap<>();
+            message.put("odontólogo",odontologoImpl.findByMatricula(matricula));
+            return new ResponseEntity<>(message,HttpStatus.OK);
         }else{
             return new ResponseEntity<>("El odontólogo buscado no se encuntra en la base de datos.", HttpStatus.NOT_FOUND);
         }
