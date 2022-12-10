@@ -1,6 +1,8 @@
 package com.sangelp.dh.domain.models;
 
 import lombok.*;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -13,6 +15,8 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "pacientes")
+@SQLDelete(sql = "UPDATE pacientes SET deleted = true WHERE paciente_id = ?")
+@Where(clause = "deleted = false")
 public class Paciente {
 
     @Id
@@ -37,5 +41,7 @@ public class Paciente {
 
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "paciente")
     private Set<Turno> turnos;
+
+    private boolean deleted = Boolean.FALSE;
 
 }

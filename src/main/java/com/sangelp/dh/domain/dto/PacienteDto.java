@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
@@ -18,4 +17,5 @@ public class PacienteDto {
     private String email;
     @NotBlank(message = "DNI no puede estar vacío.")
     private Long DNI;
+    private DomicilioDto domicilio;
 }
