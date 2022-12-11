@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -63,7 +64,7 @@ public class TurnosController {
                     }),
             @ApiResponse(responseCode = "400",description = "Petición errada.")
     })
-    public ResponseEntity<?> registrarTurnos(@RequestBody TurnoDto turnoDto){
+    public ResponseEntity<?> registrarTurnos(@RequestBody TurnoDto turnoDto) throws ParseException {
         Map<String,Object> message = new HashMap<>();
         message.put("Turno",turnoImpl.saveTurno(turnoDto));
         return new ResponseEntity<>(message, HttpStatus.OK);

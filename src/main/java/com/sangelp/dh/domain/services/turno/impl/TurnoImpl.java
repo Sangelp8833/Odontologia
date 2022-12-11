@@ -19,6 +19,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Field;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -43,10 +49,18 @@ public class TurnoImpl implements TurnoService {
     private PacienteMapper pacienteMapper;
 
     @Override
-    public TurnosAsignadosDto saveTurno(TurnoDto turnoDto) {
+    public TurnosAsignadosDto saveTurno(TurnoDto turnoDto) throws ParseException {
         Odontologo odontologo = odontologoRepository.findById(turnoDto.getOdontologoId()).orElse(null);
         Paciente paciente = pacienteRepository.findById(turnoDto.getPacienteId()).orElse(null);
         Turno turno = new Turno();
+
+        Date fechaTurno;
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        String fechaString = turnoDto.getDate();
+        fechaTurno = simpleDateFormat.parse(fechaString);
+        Instant instant = Instant.ofEpochMilli(fechaTurno.getTime());
+        turno.setDate(LocalDateTime.ofInstant(instant, ZoneId.of("America/Bogota")));
+
         if(paciente != null && odontologo != null){
             turno.setPaciente(paciente);
             turno.setOdontologo(odontologo);

@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -13,5 +14,6 @@ public class TurnoDto {
     private Long pacienteId;
     @NotBlank(message = "El odontólogo no puede estar vacío.")
     private Long odontologoId;
+    private String date;
 
 }
