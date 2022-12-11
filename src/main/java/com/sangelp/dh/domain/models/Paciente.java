@@ -1,5 +1,7 @@
 package com.sangelp.dh.domain.models;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.*;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
@@ -11,12 +13,14 @@ import java.time.ZoneId;
 import java.util.Set;
 
 @Entity
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "pacientes")
 @SQLDelete(sql = "UPDATE pacientes SET deleted = true WHERE paciente_id = ?")
 @Where(clause = "deleted = false")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,property = "id")
 public class Paciente {
 
     @Id

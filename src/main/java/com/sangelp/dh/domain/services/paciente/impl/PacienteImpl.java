@@ -3,10 +3,12 @@ package com.sangelp.dh.domain.services.paciente.impl;
 import com.sangelp.dh.domain.dto.PacienteDto;
 import com.sangelp.dh.domain.models.Domicilio;
 import com.sangelp.dh.domain.models.Paciente;
+import com.sangelp.dh.domain.models.Turno;
 import com.sangelp.dh.domain.services.paciente.PacienteService;
 import com.sangelp.dh.helpers.mappers.PacienteMapper;
 import com.sangelp.dh.repository.DomicilioRepository;
 import com.sangelp.dh.repository.PacienteRepository;
+import com.sangelp.dh.repository.TurnosRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,6 +28,9 @@ public class PacienteImpl implements PacienteService {
 
     @Autowired
     private DomicilioRepository domicilioRepository;
+
+    @Autowired
+    private TurnosRepository turnosRepository;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -62,7 +67,8 @@ public class PacienteImpl implements PacienteService {
 
     @Override
     public boolean deletePaciente(Long id) {
-        if(!pacienteRepository.findById(id).isEmpty()){
+        List<Turno> turnos = turnosRepository.findByOdontologoOrPaciente(null,pacienteRepository.findById(id).get());
+        if(!pacienteRepository.findById(id).isEmpty() && turnos.isEmpty()){
             pacienteRepository.deleteById(id);
             return true;
         }else{

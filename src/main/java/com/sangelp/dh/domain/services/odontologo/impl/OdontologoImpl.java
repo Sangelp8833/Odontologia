@@ -2,8 +2,10 @@ package com.sangelp.dh.domain.services.odontologo.impl;
 
 import com.sangelp.dh.domain.dto.OdontologoDto;
 import com.sangelp.dh.domain.models.Odontologo;
+import com.sangelp.dh.domain.models.Turno;
 import com.sangelp.dh.domain.services.odontologo.OdontologoService;
 import com.sangelp.dh.repository.OdontologoRepository;
+import com.sangelp.dh.repository.TurnosRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +22,9 @@ public class OdontologoImpl implements OdontologoService {
 
     @Autowired
     private OdontologoRepository odontologoRepository;
+
+    @Autowired
+    private TurnosRepository turnosRepository;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -53,7 +58,8 @@ public class OdontologoImpl implements OdontologoService {
 
     @Override
     public boolean deleteOndontologo(Long id) {
-        if(!odontologoRepository.findById(id).isEmpty()){
+        List<Turno> turnos = turnosRepository.findByOdontologoOrPaciente(odontologoRepository.findById(id).get(),null);
+        if(!odontologoRepository.findById(id).isEmpty() && turnos.isEmpty()){
             odontologoRepository.deleteById(id);
             return true;
         }else{

@@ -91,7 +91,8 @@ public class PacienteController {
         if(pacienteImpl.deletePaciente(pacienteId)){
             return new ResponseEntity<>("El paciente ha sido eliminado correctamente.",HttpStatus.OK);
         }else{
-            return new ResponseEntity<>("El paciente buscado no se encuentra en la base de datos.", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Error al intentar eliminar el paciente, verifique que si existe en la base de datos" +
+                    "y que no tenga turnos asignados.", HttpStatus.NOT_FOUND);
         }
     }
 

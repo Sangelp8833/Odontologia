@@ -89,9 +89,10 @@ public class OdontologoController {
     })
     public ResponseEntity<?>eliminarOdontologo(@RequestParam("id") Long odontologoId ){
         if(odontologoImpl.deleteOndontologo(odontologoId)){
-            return new ResponseEntity<>("El odontólogo ha sido eliminado correctamente.",HttpStatus.OK);
+            return new ResponseEntity<>("El odontólogo ha sido eliminado correctamente",HttpStatus.OK);
         }else{
-            return new ResponseEntity<>("El odontólogo buscado no se encuntra en la base de datos.", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Error al intentar eliminar el odontólogo, verifique que si existe en la base de datos" +
+                    "y que no tenga turnos asignados.", HttpStatus.NOT_FOUND);
         }
     }
 
