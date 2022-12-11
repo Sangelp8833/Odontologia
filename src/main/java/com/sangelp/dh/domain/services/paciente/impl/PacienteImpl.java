@@ -4,11 +4,13 @@ import com.sangelp.dh.domain.dto.PacienteDto;
 import com.sangelp.dh.domain.models.Domicilio;
 import com.sangelp.dh.domain.models.Paciente;
 import com.sangelp.dh.domain.models.Turno;
+import com.sangelp.dh.domain.services.odontologo.impl.OdontologoImpl;
 import com.sangelp.dh.domain.services.paciente.PacienteService;
 import com.sangelp.dh.helpers.mappers.PacienteMapper;
 import com.sangelp.dh.repository.DomicilioRepository;
 import com.sangelp.dh.repository.PacienteRepository;
 import com.sangelp.dh.repository.TurnosRepository;
+import org.apache.log4j.Logger;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,6 +39,8 @@ public class PacienteImpl implements PacienteService {
 
     @Autowired
     private PacienteMapper pacienteMapper;
+
+    final Logger LOGGER = Logger.getLogger(PacienteImpl.class);
 
     @Override
     public PacienteDto savePaciente(PacienteDto pacienteDto) {
@@ -70,8 +74,10 @@ public class PacienteImpl implements PacienteService {
         List<Turno> turnos = turnosRepository.findByOdontologoOrPaciente(null,pacienteRepository.findById(id).get());
         if(!pacienteRepository.findById(id).isEmpty() && turnos.isEmpty()){
             pacienteRepository.deleteById(id);
+            LOGGER.info("Se ha eliminado correctamente el paciente.");
             return true;
         }else{
+            LOGGER.error("Verifique si el paciente existe, en caso tal que si exista verifique que no tenga turnos asignados.");
             return false;
         }
     }
@@ -100,6 +106,7 @@ public class PacienteImpl implements PacienteService {
                 }
             });
             pacienteRepository.save(paciente);
+            LOGGER.info("Se ha actualizado correctamente el paciente.");
             return true;
         }).orElse(false);
     }

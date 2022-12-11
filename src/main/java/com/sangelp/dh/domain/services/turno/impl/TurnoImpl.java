@@ -5,11 +5,13 @@ import com.sangelp.dh.domain.dto.TurnosAsignadosDto;
 import com.sangelp.dh.domain.models.Odontologo;
 import com.sangelp.dh.domain.models.Paciente;
 import com.sangelp.dh.domain.models.Turno;
+import com.sangelp.dh.domain.services.paciente.impl.PacienteImpl;
 import com.sangelp.dh.domain.services.turno.TurnoService;
 import com.sangelp.dh.helpers.mappers.PacienteMapper;
 import com.sangelp.dh.repository.OdontologoRepository;
 import com.sangelp.dh.repository.PacienteRepository;
 import com.sangelp.dh.repository.TurnosRepository;
+import org.apache.log4j.Logger;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,6 +39,8 @@ public class TurnoImpl implements TurnoService {
 
     @Autowired
     private PacienteMapper pacienteMapper;
+
+    final Logger LOGGER = Logger.getLogger(PacienteImpl.class);
 
     @Override
     public TurnosAsignadosDto saveTurno(TurnoDto turnoDto) throws ParseException {
@@ -72,8 +76,10 @@ public class TurnoImpl implements TurnoService {
     public boolean deleteTurno(Long id) {
         if(!turnosRepository.findById(id).isEmpty()){
             turnosRepository.deleteById(id);
+            LOGGER.info("Se ha actualizado correctamente el turno.");
             return true;
         }else{
+            LOGGER.info("El turno que busca no se encuentra registrado en la base datos.");
             return false;
         }
     }

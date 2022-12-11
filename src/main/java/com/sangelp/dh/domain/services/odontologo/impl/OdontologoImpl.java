@@ -6,6 +6,7 @@ import com.sangelp.dh.domain.models.Turno;
 import com.sangelp.dh.domain.services.odontologo.OdontologoService;
 import com.sangelp.dh.repository.OdontologoRepository;
 import com.sangelp.dh.repository.TurnosRepository;
+import org.apache.log4j.Logger;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,8 @@ public class OdontologoImpl implements OdontologoService {
     @Autowired
     private ModelMapper modelMapper;
 
+    final Logger LOGGER = Logger.getLogger(OdontologoImpl.class);
+
     @Override
     public OdontologoDto saveOdontologo(OdontologoDto odontologoDto) {
         Odontologo odontologo = modelMapper.map(odontologoDto,Odontologo.class);
@@ -50,6 +53,7 @@ public class OdontologoImpl implements OdontologoService {
     @Override
     public OdontologoDto findByMatricula(Long matricula) {
         if(odontologoRepository.findByMatricula(matricula) == null){
+            LOGGER.info("No se ha encontrado ningún odontólogo con la matrícula especificada.");
             return null;
         }else  {
             return modelMapper.map(odontologoRepository.findByMatricula(matricula),OdontologoDto.class) ;
@@ -61,8 +65,10 @@ public class OdontologoImpl implements OdontologoService {
         List<Turno> turnos = turnosRepository.findByOdontologoOrPaciente(odontologoRepository.findById(id).get(),null);
         if(!odontologoRepository.findById(id).isEmpty() && turnos.isEmpty()){
             odontologoRepository.deleteById(id);
+            LOGGER.info("Se ha eliminado correctamente el odontólogo.");
             return true;
         }else{
+            LOGGER.error("Verifique si el odontólogo existe, en caso tal que si exista verifique que no tenga turnos asignados.");
             return false;
         }
     }
@@ -87,6 +93,7 @@ public class OdontologoImpl implements OdontologoService {
                 }
             });
             odontologoRepository.save(odontologo);
+            LOGGER.info("Se ha actualizado correctamente el odontólogo.");
             return true;
         }).orElse(false);
     }
