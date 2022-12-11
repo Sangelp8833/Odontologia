@@ -1,34 +1,23 @@
 package com.sangelp.dh.domain.services.turno.impl;
 
-import com.sangelp.dh.domain.dto.PacienteDto;
 import com.sangelp.dh.domain.dto.TurnoDto;
 import com.sangelp.dh.domain.dto.TurnosAsignadosDto;
-import com.sangelp.dh.domain.models.Domicilio;
 import com.sangelp.dh.domain.models.Odontologo;
 import com.sangelp.dh.domain.models.Paciente;
 import com.sangelp.dh.domain.models.Turno;
 import com.sangelp.dh.domain.services.turno.TurnoService;
 import com.sangelp.dh.helpers.mappers.PacienteMapper;
-import com.sangelp.dh.repository.DomicilioRepository;
 import com.sangelp.dh.repository.OdontologoRepository;
 import com.sangelp.dh.repository.PacienteRepository;
 import com.sangelp.dh.repository.TurnosRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ReflectionUtils;
 
-import java.lang.reflect.Field;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -87,21 +76,6 @@ public class TurnoImpl implements TurnoService {
         }else{
             return false;
         }
-    }
-
-    @Override
-    public boolean updateTurno(Map<String, Object> partialUpdate, Long id) {
-        Optional<Turno> turnoFound = turnosRepository.findById(id);
-        return turnoFound.map(turno -> {
-            partialUpdate.forEach((key,value) -> {
-                    Field field = ReflectionUtils.findField(turno.getClass(),key);
-                    assert field != null;
-                    field.setAccessible(true);
-                    ReflectionUtils.setField(field,turno,value);
-            });
-            turnosRepository.save(turno);
-            return true;
-        }).orElse(false);
     }
 
 }

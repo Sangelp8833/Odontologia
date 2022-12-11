@@ -1,12 +1,10 @@
 package com.sangelp.dh.domain.services.turno;
 
-import com.sangelp.dh.domain.dto.PacienteDto;
 import com.sangelp.dh.domain.dto.TurnoDto;
 import com.sangelp.dh.domain.dto.TurnosAsignadosDto;
 
 import java.text.ParseException;
 import java.util.List;
-import java.util.Map;
 
 public interface TurnoService {
 
@@ -14,5 +12,4 @@ public interface TurnoService {
     List<TurnosAsignadosDto> findAll();
     TurnosAsignadosDto findById(Long id);
     boolean deleteTurno(Long id);
-    boolean updateTurno(Map<String,Object> partialUpdate, Long id);
 }
