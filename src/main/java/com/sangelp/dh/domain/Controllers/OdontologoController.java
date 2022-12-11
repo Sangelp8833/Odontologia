@@ -2,6 +2,7 @@ package com.sangelp.dh.domain.Controllers;
 
 import com.sangelp.dh.domain.dto.OdontologoDto;
 import com.sangelp.dh.domain.services.odontologo.impl.OdontologoImpl;
+import com.sangelp.dh.helpers.exceptions.BadRequestException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -78,7 +79,7 @@ public class OdontologoController {
             return new ResponseEntity<>("El odontólogo ha sido actualizado correctamente.",HttpStatus.OK);
         }else{
             return new ResponseEntity<>("No se ha encontrado el odontólogo para actualizar.", HttpStatus.NOT_FOUND);
-        } //TODO: Agregar ejemplo en el swagger.
+        }
     }
 
     @DeleteMapping()

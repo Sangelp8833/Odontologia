@@ -79,7 +79,7 @@ public class TurnoImpl implements TurnoService {
             LOGGER.info("Se ha actualizado correctamente el turno.");
             return true;
         }else{
-            LOGGER.info("El turno que busca no se encuentra registrado en la base datos.");
+            LOGGER.error("El turno que busca no se encuentra registrado en la base datos.");
             return false;
         }
     }

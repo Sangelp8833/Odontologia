@@ -4,6 +4,7 @@ import com.sangelp.dh.domain.dto.OdontologoDto;
 import com.sangelp.dh.domain.models.Odontologo;
 import com.sangelp.dh.domain.models.Turno;
 import com.sangelp.dh.domain.services.odontologo.OdontologoService;
+import com.sangelp.dh.helpers.exceptions.BadRequestException;
 import com.sangelp.dh.repository.OdontologoRepository;
 import com.sangelp.dh.repository.TurnosRepository;
 import org.apache.log4j.Logger;
@@ -55,7 +56,7 @@ public class OdontologoImpl implements OdontologoService {
         if(odontologoRepository.findByMatricula(matricula) == null){
             LOGGER.info("No se ha encontrado ningún odontólogo con la matrícula especificada.");
             return null;
-        }else  {
+        }else{
             return modelMapper.map(odontologoRepository.findByMatricula(matricula),OdontologoDto.class) ;
         }
     }
@@ -82,8 +83,10 @@ public class OdontologoImpl implements OdontologoService {
                     if(value instanceof Integer){
                         Long newValue =  Long.valueOf((Integer) value);
                         odontologo.setMatricula(newValue);
-                    }else{
+                    }else if(value instanceof Long){
                         odontologo.setMatricula((Long) value);
+                    }else{
+                        throw new RuntimeException("El tipo del valor ingresado no es válido o no es numérico.");
                     }
                 }else{
                     Field field = ReflectionUtils.findField(odontologo.getClass(),key);

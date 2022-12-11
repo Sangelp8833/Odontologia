@@ -95,8 +95,10 @@ public class PacienteImpl implements PacienteService {
                     if(value instanceof Integer){
                         Long newValue =  Long.valueOf((Integer) value);
                         paciente.setDni(newValue);
-                    }else{
+                    }else if(value instanceof Long){
                         paciente.setDni((Long) value);
+                    }else{
+                        throw new RuntimeException("El tipo del valor ingresado no es válido o no es numérico.");
                     }
                 }else{
                     Field field = ReflectionUtils.findField(paciente.getClass(),key);
