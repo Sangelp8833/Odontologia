@@ -78,7 +78,7 @@ public class OdontologoController {
             return new ResponseEntity<>("El odontólogo ha sido actualizado correctamente.",HttpStatus.OK);
         }else{
             return new ResponseEntity<>("No se ha encontrado el odontólogo para actualizar.", HttpStatus.NOT_FOUND);
-        }
+        } //TODO: Agregar ejemplo en el swagger.
     }
 
     @DeleteMapping()

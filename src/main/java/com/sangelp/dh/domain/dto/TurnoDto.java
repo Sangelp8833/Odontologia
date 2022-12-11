@@ -10,9 +10,8 @@ import javax.validation.constraints.NotBlank;
 public class TurnoDto {
 
     @NotBlank(message = "El paciente no puede estar vacío.")
-    private PacienteDto pacienteDto;
+    private Long pacienteId;
     @NotBlank(message = "El odontólogo no puede estar vacío.")
-    private OdontologoDto odontologoDto;
-
+    private Long odontologoId;
 
 }

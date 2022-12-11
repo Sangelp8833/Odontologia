@@ -1,6 +1,5 @@
 package com.sangelp.dh.domain.Controllers;
 
-import com.sangelp.dh.domain.dto.OdontologoDto;
 import com.sangelp.dh.domain.dto.PacienteDto;
 import com.sangelp.dh.domain.services.paciente.impl.PacienteImpl;
 import io.swagger.v3.oas.annotations.Operation;
@@ -35,7 +34,7 @@ public class PacienteController {
             @ApiResponse(responseCode = "200", description = "La petición ha sido exitosa.",
                     content = {
                             @Content(mediaType = "application/json",
-                                    array = @ArraySchema(schema = @Schema(implementation = OdontologoDto.class)))
+                                    array = @ArraySchema(schema = @Schema(implementation = PacienteDto.class)))
                     })
     })
     public ResponseEntity<?> listarPacientes(){
@@ -54,7 +53,7 @@ public class PacienteController {
             @ApiResponse(responseCode = "200", description = "La petición ha sido exitosa.",
                     content = {
                             @Content(mediaType = "application/json",
-                                    schema = @Schema(implementation = OdontologoDto.class))
+                                    schema = @Schema(implementation = PacienteDto.class))
                     }),
             @ApiResponse(responseCode = "400",description = "Petición errada.")
     })
@@ -80,7 +79,7 @@ public class PacienteController {
         }else{
             return new ResponseEntity<>("No se ha encontrado el paciente para actualizar.", HttpStatus.NOT_FOUND);
         }
-    }
+    } //TODO: Agregar ejemplo en el swagger.
 
     @DeleteMapping()
     @Operation(summary = "Endpoint para eliminar pacientes.")
@@ -102,7 +101,7 @@ public class PacienteController {
             @ApiResponse(responseCode = "200", description = "La petición ha sido exitosa.",
                     content = {
                             @Content(mediaType = "application/json",
-                                    schema = @Schema(implementation = OdontologoDto.class))
+                                    schema = @Schema(implementation = PacienteDto.class))
                     }),
             @ApiResponse(responseCode = "400",description = "Petición errada.")
     })
