@@ -41,7 +41,7 @@ public class TurnosController {
                                     array = @ArraySchema(schema = @Schema(implementation = TurnoDto.class)))
                     })
     })
-    public ResponseEntity<?> listarPacientes(){
+    public ResponseEntity<?> listarTurnos(){
         if(turnoImpl.findAll().isEmpty()){
             return new ResponseEntity<>("No hay Turnos registrados en la base de datos.", HttpStatus.NOT_FOUND);
         }else{

@@ -4,7 +4,6 @@ import com.sangelp.dh.domain.dto.OdontologoDto;
 import com.sangelp.dh.domain.models.Odontologo;
 import com.sangelp.dh.domain.models.Turno;
 import com.sangelp.dh.domain.services.odontologo.OdontologoService;
-import com.sangelp.dh.helpers.exceptions.BadRequestException;
 import com.sangelp.dh.repository.OdontologoRepository;
 import com.sangelp.dh.repository.TurnosRepository;
 import org.apache.log4j.Logger;

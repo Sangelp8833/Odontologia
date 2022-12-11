@@ -1,1 +1,3 @@
 INFO    2022-12-11 15:19:08,377 [http-nio-8080-exec-2] com.sangelp.dh.domain.services.odontologo.impl.OdontologoImpl  - No se ha encontrado ningún odontólogo con la matrícula especificada.
+INFO    2022-12-11 15:23:25,813 [http-nio-8080-exec-2] com.sangelp.dh.domain.services.odontologo.impl.OdontologoImpl  - No se ha encontrado ningún odontólogo con la matrícula especificada.
+INFO    2022-12-11 15:35:55,324 [http-nio-8080-exec-1] com.sangelp.dh.domain.services.odontologo.impl.OdontologoImpl  - No se ha encontrado ningún odontólogo con la matrícula especificada.

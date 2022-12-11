@@ -4,7 +4,6 @@ import com.sangelp.dh.domain.dto.PacienteDto;
 import com.sangelp.dh.domain.models.Domicilio;
 import com.sangelp.dh.domain.models.Paciente;
 import com.sangelp.dh.domain.models.Turno;
-import com.sangelp.dh.domain.services.odontologo.impl.OdontologoImpl;
 import com.sangelp.dh.domain.services.paciente.PacienteService;
 import com.sangelp.dh.helpers.mappers.PacienteMapper;
 import com.sangelp.dh.repository.DomicilioRepository;
@@ -63,6 +62,7 @@ public class PacienteImpl implements PacienteService {
     @Override
     public PacienteDto findByDni(Long dni) {
         if(pacienteRepository.findByDni(dni) == null){
+            LOGGER.info("No se encontrado un paciente con el DNI especificado.");
             return null;
         }else  {
             return modelMapper.map(pacienteRepository.findByDni(dni),PacienteDto.class) ;
