@@ -24,6 +24,7 @@ import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -54,12 +55,10 @@ public class TurnoImpl implements TurnoService {
         Paciente paciente = pacienteRepository.findById(turnoDto.getPacienteId()).orElse(null);
         Turno turno = new Turno();
 
-        Date fechaTurno;
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
-        String fechaString = turnoDto.getDate();
-        fechaTurno = simpleDateFormat.parse(fechaString);
-        Instant instant = Instant.ofEpochMilli(fechaTurno.getTime());
-        turno.setDate(LocalDateTime.ofInstant(instant, ZoneId.of("America/Bogota")));
+        String fullDate = turnoDto.getDate() + " " + turnoDto.getHour();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+        LocalDateTime dateTime = LocalDateTime.parse(fullDate,formatter);
+        turno.setDate(dateTime);
 
         if(paciente != null && odontologo != null){
             turno.setPaciente(paciente);

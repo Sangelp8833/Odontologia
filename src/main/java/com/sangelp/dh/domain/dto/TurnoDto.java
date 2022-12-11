@@ -15,5 +15,6 @@ public class TurnoDto {
     @NotBlank(message = "El odontólogo no puede estar vacío.")
     private Long odontologoId;
     private String date;
+    private String hour;
 
 }

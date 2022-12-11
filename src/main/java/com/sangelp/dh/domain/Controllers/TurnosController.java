@@ -16,10 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
 import java.util.HashMap;
@@ -68,6 +65,20 @@ public class TurnosController {
         Map<String,Object> message = new HashMap<>();
         message.put("Turno",turnoImpl.saveTurno(turnoDto));
         return new ResponseEntity<>(message, HttpStatus.OK);
+    }
+
+    @DeleteMapping()
+    @Operation(summary = "Endpoint para eliminar Turnos.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Se ha eliminado correctamente el turno."),
+            @ApiResponse(responseCode = "404",description = "Petición errada, no se ha encontrado ningún turno.")
+    })
+    public ResponseEntity<?>eliminarTurno(@RequestParam("id") Long turnoId ){
+        if(turnoImpl.deleteTurno(turnoId)){
+            return new ResponseEntity<>("El turno ha sido cancelado correctamente.",HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>("El turno buscado no se encuentra en la base de datos.", HttpStatus.NOT_FOUND);
+        }
     }
 
 }
